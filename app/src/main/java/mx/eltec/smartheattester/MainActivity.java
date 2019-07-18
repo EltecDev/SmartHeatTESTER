@@ -719,7 +719,7 @@ public class MainActivity extends AppCompatActivity {
                                                             cFirm = String.valueOf(s);
                                                         }
 
-                                                        if(cFirm.isEmpty() || !cFirm.equals("2.2")){
+                                                        if(cFirm.isEmpty() || !cFirm.equals("2.3")){
                                                             ((TextView) dialogView.findViewById(R.id.statusText2)).setText("Firmware incorrecto (" + cFirm + ")");
                                                             ((TextView) dialogView.findViewById(R.id.statusText2)).setTextColor(Color.RED);
                                                             dialogView.findViewById(R.id.statusImageView2).setVisibility(View.VISIBLE);

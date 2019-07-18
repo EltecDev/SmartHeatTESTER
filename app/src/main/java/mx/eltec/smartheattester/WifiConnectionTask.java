@@ -30,14 +30,14 @@ public class WifiConnectionTask extends AsyncTask {
         // Configuración de la red wifi deseada:
         WifiConfiguration wifiConfig = new WifiConfiguration();
         wifiConfig.SSID = ssid;
-        wifiConfig.preSharedKey = String.format("\"%s\"", key);
+        //wifiConfig.preSharedKey = String.format("\"%s\"", key);
         //wifiConfig.status = WifiConfiguration.Status.DISABLED;
         //wifiConfig.priority = Integer.MAX_VALUE;
 
         // Configuración extra del wifi:
         wifiConfig.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
         wifiConfig.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
-        wifiConfig.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+        wifiConfig.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
 
         wifiConfig.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
         wifiConfig.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
@@ -71,5 +71,4 @@ public class WifiConnectionTask extends AsyncTask {
 
         return null;
     }
-
 }
