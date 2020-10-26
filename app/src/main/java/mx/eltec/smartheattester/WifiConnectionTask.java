@@ -15,12 +15,14 @@ import android.content.Context;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.util.List;
 
 public class WifiConnectionTask extends AsyncTask {
 
     public String ssid = "";
+    public boolean ready;
     public Context context;
     private String key = "4396102199";
 
@@ -50,8 +52,9 @@ public class WifiConnectionTask extends AsyncTask {
         final WifiManager wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
 
             // Se desconecta el wifi (en caso de que ya existiera una conexión):
+        Log.d("readi:",""+ready);
+        if (!ready) //Se verifica que si se logró conectar o ya estaba conectado al ssid, no se desconecte
             wifiManager.disconnect();
-            // ...
 
         List<WifiConfiguration> res = wifiManager.getConfiguredNetworks();
         if(res != null){

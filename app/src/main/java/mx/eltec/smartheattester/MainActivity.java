@@ -504,11 +504,19 @@ public class MainActivity extends AppCompatActivity {
             ad.show();
 
             // Se configura la tarea para intentar la conexión.
+            final WifiManager wManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+            final WifiInfo wInfo = wManager.getConnectionInfo();
 
             final WifiConnectionTask wifiConnectionTask = new WifiConnectionTask();
             wifiConnectionTask.ssid = String.format("\"%s\"", sra.selectedSSID);
             wifiConnectionTask.context = this;
+            String ssid = String.format("\"%s\"", sra.selectedSSID);
 
+            if(wInfo.getSSID().contains(ssid)) {
+                wifiConnectionTask.ready = true;
+            }else {
+                wifiConnectionTask.ready = false;
+            }
             // Se configura el conteo de TIMEOUT para la conexión.
 
             final CountDownTimer connTimer = new CountDownTimer(40000, 40000) {
@@ -530,7 +538,7 @@ public class MainActivity extends AppCompatActivity {
                     dialogView.findViewById(R.id.progressBar1).setVisibility(View.GONE);
                     dialogView.findViewById(R.id.statusImageView1).setVisibility(View.VISIBLE);
                     ((ImageView) dialogView.findViewById(R.id.statusImageView1)).setImageResource(R.drawable.ic_error_red_24dp);
-                    ((TextView) dialogView.findViewById(R.id.statusText1)).setText("No se pudo establecer conexión.");
+                    ((TextView) dialogView.findViewById(R.id.statusText1)).setText("No se pudo establecer conexión.(timeout)");
                     ad.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true);
                     if(wifiConnectionBroadcast != null ){
                         try{
@@ -608,7 +616,7 @@ public class MainActivity extends AppCompatActivity {
                                                     if(testOldPort){        // Ya se intentó el puerto 80.
 
                                                         testOldPort = false;
-                                                        ((TextView) dialogView.findViewById(R.id.statusText2)).setText("Error de comunicación.");
+                                                        ((TextView) dialogView.findViewById(R.id.statusText2)).setText("Error de comunicación (p80).");
                                                         dialogView.findViewById(R.id.statusImageView2).setVisibility(View.VISIBLE);
                                                         ((ImageView) dialogView.findViewById(R.id.statusImageView2)).setImageResource(R.drawable.ic_error_red_24dp);
                                                         dialogView.findViewById(R.id.progressBar2).setVisibility(View.GONE);
@@ -719,14 +727,14 @@ public class MainActivity extends AppCompatActivity {
                                                             cFirm = String.valueOf(s);
                                                         }
 
-                                                        if(cFirm.isEmpty() || !cFirm.equals("2.3")){
-                                                            ((TextView) dialogView.findViewById(R.id.statusText2)).setText("Firmware incorrecto (" + cFirm + ")");
+                                                        if(cFirm.isEmpty() /*|| !cFirm.equals("2.3")*/){
+                                                            ((TextView) dialogView.findViewById(R.id.statusText2)).setText("Firmware incorrecto (" + cFirm + ") o nulo");
                                                             ((TextView) dialogView.findViewById(R.id.statusText2)).setTextColor(Color.RED);
                                                             dialogView.findViewById(R.id.statusImageView2).setVisibility(View.VISIBLE);
                                                             ((ImageView) dialogView.findViewById(R.id.statusImageView2)).setImageResource(R.drawable.ic_error_red_24dp);
                                                             dialogView.findViewById(R.id.progressBar2).setVisibility(View.GONE);
                                                         }else{
-                                                            ((TextView) dialogView.findViewById(R.id.statusText2)).setText("Prueba terminada.");
+                                                            ((TextView) dialogView.findViewById(R.id.statusText2)).setText("Prueba terminada:"+cFirm);
                                                             dialogView.findViewById(R.id.statusImageView2).setVisibility(View.VISIBLE);
                                                             ((ImageView) dialogView.findViewById(R.id.statusImageView2)).setImageResource(R.drawable.ic_check_circle_green_24dp);
                                                             dialogView.findViewById(R.id.progressBar2).setVisibility(View.GONE);
